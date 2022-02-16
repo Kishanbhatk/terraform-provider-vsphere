@@ -127,7 +127,7 @@ func resourceVSphereFileCreate(d *schema.ResourceData, meta interface{}) error {
 
 	return resourceVSphereFileRead(d, meta)
 }
-
+// create_directories [ create directory only when the directory doesnt exist ]
 func createDirectory(datastoreFileManager *object.DatastoreFileManager, f *file) error {
 	directoryPathIndex := strings.LastIndex(f.destinationFile, "/")
         targetPath := f.destinationFile[0:directoryPathIndex]
