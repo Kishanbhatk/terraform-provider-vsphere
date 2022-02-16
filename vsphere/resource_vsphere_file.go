@@ -138,7 +138,7 @@ func createDirectory(datastoreFileManager *object.DatastoreFileManager, f *file)
                          err1 := datastoreFileManager.FileManager.MakeDirectory(context.TODO(),
                                                   datastoreFileManager.Datastore.Path(targetPath), datastoreFileManager.Datacenter, true)
                                    if err1 != nil {
-                                  return err
+                                  return err1
                                  }
         }
      }
