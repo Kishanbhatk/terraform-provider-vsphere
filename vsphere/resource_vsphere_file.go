@@ -130,13 +130,19 @@ func resourceVSphereFileCreate(d *schema.ResourceData, meta interface{}) error {
 
 func createDirectory(datastoreFileManager *object.DatastoreFileManager, f *file) error {
 	directoryPathIndex := strings.LastIndex(f.destinationFile, "/")
-	targetPath := f.destinationFile[0:directoryPathIndex]
-	err := datastoreFileManager.FileManager.MakeDirectory(context.TODO(),
-		datastoreFileManager.Datastore.Path(targetPath), datastoreFileManager.Datacenter, true)
-	if err != nil {
-		return err
-	}
-	return nil
+        targetPath := f.destinationFile[0:directoryPathIndex]
+        _, err := datastoreFileManager.Datastore.Stat(context.TODO(),f.destinationFile)
+        if err != nil {
+                switch err.(type) {
+                case object.DatastoreNoSuchDirectoryError:
+                         err1 := datastoreFileManager.FileManager.MakeDirectory(context.TODO(),
+                                                  datastoreFileManager.Datastore.Path(targetPath), datastoreFileManager.Datacenter, true)
+                                   if err1 != nil {
+                                  return err
+                                 }
+        }
+     }
+    return nil
 }
 
 // fileUpload - upload file to a vSphere datastore
